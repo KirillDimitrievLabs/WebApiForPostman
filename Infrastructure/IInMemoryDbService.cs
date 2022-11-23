@@ -1,4 +1,6 @@
-﻿namespace WebApiForPostman.Infrastructure;
+﻿using System.Collections.Generic;
+
+namespace WebApiForPostman.Infrastructure;
 
 public interface IInMemoryDbService<TEntity>
 {
