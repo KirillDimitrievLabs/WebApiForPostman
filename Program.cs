@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using WebApiForPostman.Infrastructure;
 using WebApiForPostman.Infrastructure.Entities;
 
@@ -14,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<InMemoryDbContext>();
 builder.Services.AddTransient<IInMemoryDbService<User>, InMemoryDbService>();
-
+builder.Services.AddTransient<TokenService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

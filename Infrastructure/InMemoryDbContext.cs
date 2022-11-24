@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using WebApiForPostman.Infrastructure.Entities;
+﻿using WebApiForPostman.Infrastructure.Entities;
 
 namespace WebApiForPostman.Infrastructure;
 
 public class InMemoryDbContext
 {
+    public string Token = "MAINTOKEN";
+
     public InMemoryDbContext()
     {
         Users = new List<User>();
@@ -20,7 +20,7 @@ public class InMemoryDbContext
         var logins = new List<string>() { "rapebot", "steel1337", "oposum", "mrak", "postman", "windows" };
         var rn = new Random(3265);
         var rnPhone = new Random(3245234);
-        for (int i = 0; i < 6; i++)
+        for (var i = 0; i < 6; i++)
         {
             Users.Add(new User()
             {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using WebApiForPostman.Infrastructure.Entities;
+﻿using WebApiForPostman.Infrastructure.Entities;
 
 namespace WebApiForPostman.Infrastructure;
 
@@ -66,8 +63,6 @@ public class InMemoryDbService : IInMemoryDbService<User>
     public User UpdateUser(int userId, string? name = null, string? login = null, int? age = null,
         string? phoneNumber = null)
     {
-        //if (age < 1) throw new ArgumentException("Impossible age");
-
         var userToUpdateId = _inMemoryDbContext.Users.FindIndex(user => user.id == userId);
 
         _inMemoryDbContext.Users[userToUpdateId].Age = age ?? _inMemoryDbContext.Users[userToUpdateId].Age;

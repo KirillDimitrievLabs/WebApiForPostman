@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebApiForPostman.Infrastructure;
 using WebApiForPostman.Infrastructure.Entities;
 
@@ -13,6 +11,7 @@ namespace WebApiForPostman.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
+    private const string Token = "MAINTOKEN";
     private readonly IInMemoryDbService<User> _inMemoryDbService;
 
     public UserController(IInMemoryDbService<User> inMemoryDbService)
@@ -29,12 +28,27 @@ public class UserController : ControllerBase
     [HttpPost]
     public IActionResult CreateUser([FromBody] UserDto user)
     {
-        if (user.Name == null) return BadRequest("Name is null or empty");
-        if (user.Login == null) return BadRequest("Login is null or empty");
-        if (user.PhoneNumber == null) return BadRequest("PhoneNumber is null or empty");
+        try
+        {
+            if (Request.Headers.Authorization.Any()) return BadRequest("Auth header didnt set");
+            var auth = Request.Headers.Authorization[0];
+            if (auth == null) return BadRequest("Auth header didnt set");
+            var authType = auth.Split(" ")[0];
+            if (authType != "Bearer") return BadRequest("Invalid auth type");
+            var token = auth.Split(" ")[0];
+            if (token != Token) return BadRequest("Invalid token");
 
-        var userToReturn = _inMemoryDbService.CreateUser(user.Name, user.Login, user.Age, user.PhoneNumber);
-        return Ok(userToReturn);
+            if (user.Name == null) return BadRequest("Name is null or empty");
+            if (user.Login == null) return BadRequest("Login is null or empty");
+            if (user.PhoneNumber == null) return BadRequest("PhoneNumber is null or empty");
+
+            var userToReturn = _inMemoryDbService.CreateUser(user.Name, user.Login, user.Age, user.PhoneNumber);
+            return Ok(userToReturn);
+        }
+        catch (Exception e)
+        {
+            return BadRequest("Internal Server Error");
+        }
     }
 
     [HttpDelete]
@@ -42,6 +56,14 @@ public class UserController : ControllerBase
     {
         try
         {
+            if (Request.Headers.Authorization.Any()) return BadRequest("Auth header didnt set");
+            var auth = Request.Headers.Authorization[0];
+            if (auth == null) return BadRequest("Auth header didnt set");
+            var authType = auth.Split(" ")[0];
+            if (authType != "Bearer") return BadRequest("Invalid auth type");
+            var token = auth.Split(" ")[0];
+            if (token != Token) return BadRequest("Invalid token");
+
             _inMemoryDbService.DeleteUser(userId);
             return Ok(userId);
         }
@@ -56,6 +78,14 @@ public class UserController : ControllerBase
     {
         try
         {
+            if (Request.Headers.Authorization.Any()) return BadRequest("Auth header didnt set");
+            var auth = Request.Headers.Authorization[0];
+            if (auth == null) return BadRequest("Auth header didnt set");
+            var authType = auth.Split(" ")[0];
+            if (authType != "Bearer") return BadRequest("Invalid auth type");
+            var token = auth.Split(" ")[0];
+            if (token != Token) return BadRequest("Invalid token");
+
             var userToReturn = _inMemoryDbService.UpdateUser(id, userDto.Name ?? null, userDto.Login ?? null,
                 userDto.Age == 0 ? -1 : userDto.Age, userDto.PhoneNumber ?? null);
             return Ok(userToReturn);
@@ -71,6 +101,14 @@ public class UserController : ControllerBase
     {
         try
         {
+            if (Request.Headers.Authorization.Any()) return BadRequest("Auth header didnt set");
+            var auth = Request.Headers.Authorization[0];
+            if (auth == null) return BadRequest("Auth header didnt set");
+            var authType = auth.Split(" ")[0];
+            if (authType != "Bearer") return BadRequest("Invalid auth type");
+            var token = auth.Split(" ")[0];
+            if (token != Token) return BadRequest("Invalid token");
+
             var userToReturn = _inMemoryDbService.UpdateUser(id, name, login, age, phoneNumber);
             return Ok(userToReturn);
         }
