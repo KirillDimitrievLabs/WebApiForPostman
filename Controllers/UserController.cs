@@ -30,12 +30,18 @@ public class UserController : ControllerBase
     {
         try
         {
-            if (Request.Headers.Authorization.Any()) return BadRequest("Auth header didnt set");
+            if (Request.Headers.Authorization.Count == 0) return BadRequest("Auth header wasnt set");
+
             var auth = Request.Headers.Authorization[0];
+
             if (auth == null) return BadRequest("Auth header didnt set");
+
             var authType = auth.Split(" ")[0];
+
             if (authType != "Bearer") return BadRequest("Invalid auth type");
-            var token = auth.Split(" ")[0];
+
+            var token = auth.Split(" ")[1];
+
             if (token != Token) return BadRequest("Invalid token");
 
             if (user.Name == null) return BadRequest("Name is null or empty");
@@ -56,12 +62,18 @@ public class UserController : ControllerBase
     {
         try
         {
-            if (Request.Headers.Authorization.Any()) return BadRequest("Auth header didnt set");
+            if (Request.Headers.Authorization.Count == 0) return BadRequest("Auth header wasnt set");
+
             var auth = Request.Headers.Authorization[0];
+
             if (auth == null) return BadRequest("Auth header didnt set");
+
             var authType = auth.Split(" ")[0];
+
             if (authType != "Bearer") return BadRequest("Invalid auth type");
-            var token = auth.Split(" ")[0];
+
+            var token = auth.Split(" ")[1];
+
             if (token != Token) return BadRequest("Invalid token");
 
             _inMemoryDbService.DeleteUser(userId);
@@ -78,12 +90,18 @@ public class UserController : ControllerBase
     {
         try
         {
-            if (Request.Headers.Authorization.Any()) return BadRequest("Auth header didnt set");
+            if (Request.Headers.Authorization.Count == 0) return BadRequest("Auth header wasnt set");
+
             var auth = Request.Headers.Authorization[0];
+
             if (auth == null) return BadRequest("Auth header didnt set");
+
             var authType = auth.Split(" ")[0];
+
             if (authType != "Bearer") return BadRequest("Invalid auth type");
-            var token = auth.Split(" ")[0];
+
+            var token = auth.Split(" ")[1];
+
             if (token != Token) return BadRequest("Invalid token");
 
             var userToReturn = _inMemoryDbService.UpdateUser(id, userDto.Name ?? null, userDto.Login ?? null,
@@ -101,12 +119,18 @@ public class UserController : ControllerBase
     {
         try
         {
-            if (Request.Headers.Authorization.Any()) return BadRequest("Auth header didnt set");
+            if (Request.Headers.Authorization.Count == 0) return BadRequest("Auth header wasnt set");
+
             var auth = Request.Headers.Authorization[0];
+
             if (auth == null) return BadRequest("Auth header didnt set");
+
             var authType = auth.Split(" ")[0];
+
             if (authType != "Bearer") return BadRequest("Invalid auth type");
-            var token = auth.Split(" ")[0];
+
+            var token = auth.Split(" ")[1];
+
             if (token != Token) return BadRequest("Invalid token");
 
             var userToReturn = _inMemoryDbService.UpdateUser(id, name, login, age, phoneNumber);
